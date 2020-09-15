@@ -8,6 +8,7 @@ const config = require('config');
 
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
+const Post = require('../../models/Post');
 
 // @route    GET api/profile/me
 // @desc     Get current user's profile
@@ -158,6 +159,8 @@ router.get('/user/:user_id', async (req, res) => {
 // @access   Private
 router.delete('/', auth, async (req, res) => {
   try {
+    await Post.deleteMany({ user: req.user.id });
+
     await Profile.findOneAndRemove({
       user: req.user.id,
     });
